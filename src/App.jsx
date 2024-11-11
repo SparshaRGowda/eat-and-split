@@ -1,35 +1,67 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import data from "./data";
+import Users from "./components/users";
+import AddNewFriend from "./components/addNewFriend";
+import Modal from "./components/modal";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [usersData, setUsersData] = useState(data);
+  const [addFriend, setAddFriend] = useState(false);
+  const [selectedUser, setSelectedUser] = useState({
+    id: "",
+    name: "",
+    balance: "",
+  });
+  const [userSelect, setUserSelect] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [bal, setBal] = useState(0);
+
+  function handleAddFriend(add) {
+    setAddFriend(add);
+  }
+
+  function handleUsersData(newData) {
+    setUsersData((prev) => [...prev, newData]);
+  }
+
+  function handleUserSelect(select) {
+    setUserSelect(select);
+  }
+
+  function handleUserModal(user) {
+    setSelectedUser(user);
+  }
+
+  function updateBalance(bal, user) {
+    setBal(bal);
+    usersData.map((item) =>
+      item.id === user.id ? [(item.balance = bal)] : item
+    );
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Users
+        usersData={usersData}
+        handleUserSelect={handleUserSelect}
+        handleUserModal={handleUserModal}
+        user={selectedUser}
+      />
+
+      <button onClick={() => setAddFriend(true)} className="h-8 text-sm">
+        Add friend
+      </button>
+      {addFriend ? (
+        <AddNewFriend
+          handleAddFriend={handleAddFriend}
+          handleUsersData={handleUsersData}
+        />
+      ) : null}
+      {userSelect ? (
+        <Modal user={selectedUser} updateBalance={updateBalance} />
+      ) : null}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
