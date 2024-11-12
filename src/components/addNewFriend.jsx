@@ -57,6 +57,12 @@ export default function AddNewFriend({ handleAddFriend, handleUsersData }) {
       <button className="h-8 text-sm" onClick={addNewFriend}>
         Add
       </button>
+      <button
+        className="h-8 text-sm ml-1"
+        onClick={() => handleAddFriend(false)}
+      >
+        Close
+      </button>
     </div>
   );
 }

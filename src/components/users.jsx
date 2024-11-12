@@ -25,14 +25,20 @@ export default function Users({
           <div className="flex flex-col">
             <p>{item.name}</p>
 
-            {item.balance <= 0 ? (
-              <p>{`you owe ${item.name} ${Math.abs(item.balance)}$`}</p>
-            ) : (
-              <p>{`you are owed ${item.name} ${Math.abs(item.balance)}$`}</p>
+            {item.balance < 0 && (
+              <p>
+                you owe {item.name} ${Math.abs(item.balance)}
+              </p>
             )}
+            {item.balance > 0 && (
+              <p>
+                {item.name} owes you ${Math.abs(item.balance)}
+              </p>
+            )}
+            {item.balance === "0" && <p>No outstanding balance</p>}
           </div>
           <button
-            className="h-8 text-sm ml-24 disabled:bg-slate-400"
+            className="h-8 text-sm ml-[120px] disabled:bg-slate-400"
             onClick={() => handleEachUserModal(item)}
           >
             {!openModal && item.id === user.id ? "Close" : "Select"}
